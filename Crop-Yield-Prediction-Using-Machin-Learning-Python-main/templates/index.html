@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Famine Astro - Predicting Crop Insufficiency in India</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f0f0f0;
+        }
+        button{
+        margin-top: 20px;
+        }
+        th,td{
+        text-align:center;
+        }
+h6{
+   text-align:center;
+   margin:15px auto;
+}
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            color: black;
+            padding: 20px;
+            max-width: 800px;
+            margin: 50px auto; /* Centering the div horizontally and adding 50px margin from the top */
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: left;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+            margin-bottom: 20px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .description {
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 0;
+            background-color: #007bff;
+            color: white;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-style: italic; /* Making the text italic */
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+            margin-bottom: 20px;
+            border-radius: 20px 20px 0 0;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h3>Famine Astro</h3>
+    </div>
+    <div class="description">
+        <p>Famine Astro is a
+           sophisticated application designed to address
+           the critical issue of insufficient crop production in India.
+           Its primary function revolves around analyzing an array of crucial
+           factors to predict and anticipate potential crop shortages.
+           By harnessing advanced analytical techniques and leveraging vast datasets,
+           Famine Astro provides invaluable insights into the agricultural landscape,
+           helping People make informed decisions to mitigate the impact of food scarcity.</p>
+    </div>
+    <div class="row">
+        <div class="">
+            <form action="/find_least_produced_item" method="post">
+                <h3 class="form-title">Astro Calculator</h3>
+                <div class="form-group">
+                    <label for="Area">State:</label>
+                    <input type="text" class="form-control" placeholder="Enter State Name" name="Area" onclick="clearOutput()" autocomplete="off">
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary btn-block">Find Insufficient Item</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <!-- Your image code here -->
+        </div>
+    </div>
+    {% if least_item %}
+    <h6>Least Produced Item is {{ least_item }}</h6>
+    {% endif %}
+    <form action="/top_10_areas" method="post">
+        <div class="form-group">
+            <label for="Item">Crop:</label>
+            <input type="text" class="form-control" placeholder="Enter Crop Name" name="Item" onclick="clearOutput()" autocomplete="off">
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary btn-block">Find Affected State</button>
+        </div>
+    </form>
+    {% if top_areas %}
+    <div class="table-responsive"> <!-- Added table-responsive class -->
+        <table class="table table-bordered table-striped"> <!-- Added table classes -->
+            <thead>
+                <tr>
+                    <th></th> <!-- Table header for numbers -->
+                    <th> Areas with Least Shortage of {{ item }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for i, (area, shortage) in top_areas.items() | enumerate %}
+<tr>
+    <td>{{ i }}</td>
+    <td>{{ area }}</td>
+</tr>
+{% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    <!-- New form for predicting famine year -->
+    <form action="/predict_famine_year" method="post">
+        <div class="form-group">
+            <label for="Area">State:</label>
+            <input type="text" class="form-control" placeholder="Enter State Name" name="Area" onclick="clearOutput()" autocomplete="off">
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary btn-block">Predict Famine Year</button>
+        </div>
+    </form>
+    <!-- Display predicted famine year and major factor -->
+    {% if predicted_year %}
+    <h6>Predicted Famine Year for {{ area }} is {{ predicted_year }}</h6>
+    <p>Major factor contributing to the prediction: {{ major_factor }}</p>
+    {% endif %}
+    <div class="footer">
+        <p>&copy; 2024 Famine Astro. All rights reserved.</p>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/"></script>
+</body>
+</html>
