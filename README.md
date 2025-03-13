@@ -67,8 +67,6 @@ food-famine-forecasting/
 ![Screenshot 2025-03-13 144746](https://github.com/user-attachments/assets/2c2347c1-4ecf-4d2c-921d-564aea7edf21)
 
 
-![Screenshot 2025-03-13 145126](https://github.com/user-attachments/assets/7fddbe51-05d5-425e-8cdc-121caa7978fb)
-
 ## Research Background
 This implementation is based on the research paper "Food Famine Forecasting using Artificial Neural Network". The paper introduced a novel approach using a Multi-Dimensional Factor Index (MFI) for classifying factors that influence food famine. The ANN model was trained on data from 1997 to 2023 and demonstrates higher accuracy (92.65%) compared to traditional methods like FEWS NET (70%) and K-Nearest Neighbor (87%).
 
