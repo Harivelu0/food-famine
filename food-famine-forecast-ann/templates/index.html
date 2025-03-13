@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Food Famine Forecasting - Predicting Crop Insufficiency in India</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        button {
+            margin-top: 20px;
+        }
+        
+        th, td {
+            text-align: center;
+        }
+        
+        h6 {
+            text-align: center;
+            margin: 15px auto;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            color: black;
+            padding: 20px;
+            max-width: 800px;
+            margin: 50px auto;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+            margin-bottom: 20px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .description {
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 0;
+            background-color: #007bff;
+            color: white;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-style: italic;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .result-box {
+            background-color: #e8f4ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 5px solid #007bff;
+        }
+        
+        .metrics-box {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .metrics-title {
+            color: #007bff;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .form-section {
+            border-top: 1px solid #dee2e6;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        
+        .error-message {
+            background-color: #ffebee;
+            color: #d32f2f;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 5px solid #d32f2f;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h3>Food Famine Forecasting System</h3>
+        <p>Using Artificial Neural Networks</p>
+    </div>
+    
+    <div class="description">
+        <p>This system is designed to address the critical issue of food famine in India by analyzing multiple factors like crop yield, rainfall, population, and seasonal variations. Using advanced Artificial Neural Network technology, our system provides predictions for potential famine scenarios across different regions of India.</p>
+        
+        {% if error_message %}
+        <div class="error-message">
+            <strong>Error:</strong> {{ error_message }}
+        </div>
+        {% endif %}
+        
+        <div class="metrics-box">
+            <h5 class="metrics-title">Model Performance</h5>
+            <div class="metric-item">
+                <span>Accuracy:</span>
+                <span>{{ model_accuracy }}</span>
+            </div>
+            <div class="metric-item">
+                <span>RMSE:</span>
+                <span>{{ rmse }}</span>
+            </div>
+            <div class="metric-item">
+                <span>MAD:</span>
+                <span>{{ mad }}</span>
+            </div>
+            <div class="metric-item">
+                <span>MAPE:</span>
+                <span>{{ mape }}</span>
+            </div>
+            <div class="metric-item">
+                <span>R² Value:</span>
+                <span>{{ r2 }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <form action="/find_least_produced_item" method="post">
+        <h3 class="form-title">Crop Vulnerability Analysis</h3>
+        <div class="form-group">
+            <label for="Area">State:</label>
+            <input type="text" class="form-control" placeholder="Enter State Name" name="Area" onclick="clearOutput()" autocomplete="off" required>
+        </div>
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary btn-block">Find Most Vulnerable Crop</button>
+        </div>
+    </form>
+    
+    {% if least_item %}
+    <div class="result-box">
+        <h6>Most Vulnerable Crop in the Region: <strong>{{ least_item }}</strong></h6>
+        <p class="text-center">This crop has the lowest average yield and is at highest risk during food shortage scenarios.</p>
+    </div>
+    {% endif %}
+    
+    <div class="form-section">
+        <form action="/top_10_areas" method="post">
+            <h3 class="form-title">Regional Vulnerability Analysis</h3>
+            <div class="form-group">
+                <label for="Item">Crop:</label>
+                <input type="text" class="form-control" placeholder="Enter Crop Name" name="Item" onclick="clearOutput()" autocomplete="off" required>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary btn-block">Find Affected Regions</button>
+            </div>
+        </form>
+    </div>
+    
+    {% if top_areas %}
+    <div class="result-box">
+        <h6>Regions with Highest Vulnerability for {{ item }}</h6>
+        {% if top_areas|length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Region</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for i, (area, shortage) in top_areas.items() | enumerate %}
+                    <tr>
+                        <td>{{ i }}</td>
+                        <td>{{ area }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center">No data available for this crop.</p>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <div class="form-section">
+        <form action="/predict_famine_year" method="post">
+            <h3 class="form-title">Famine Year Prediction</h3>
+            <div class="form-group">
+                <label for="Area">State:</label>
+                <input type="text" class="form-control" placeholder="Enter State Name" name="Area" onclick="clearOutput()" autocomplete="off" required>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary btn-block">Predict Potential Famine Year</button>
+            </div>
+        </form>
+    </div>
+    
+    {% if predicted_year %}
+    <div class="result-box">
+        <h6>Famine Risk Prediction for {{ area }}</h6>
+        <p class="text-center">Potential risk year: <strong>{{ predicted_year }}</strong></p>
+        <p class="text-center">Major contributing factor: <strong>{{ major_factor }}</strong></p>
+        <div class="alert alert-info mt-2">
+            <small>This prediction is based on historical trends, climate data, crop yields, and population factors analyzed using our Artificial Neural Network model.</small>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="footer">
+        <p>© 2024 Food Famine Forecasting System. Developed by Haripriya. 
+           <a href="/paper" class="text-white">Read the research paper</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    function clearOutput() {
+        // Clear previous results when starting a new search
+        const resultBoxes = document.querySelectorAll('.result-box');
+        resultBoxes.forEach(box => {
+            box.style.display = 'none';
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j2+nHftIWERbh5a" crossorigin="anonymous"></script>
+</body>
+</html>
