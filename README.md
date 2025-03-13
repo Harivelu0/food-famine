@@ -29,28 +29,6 @@ The Artificial Neural Network model implemented in this system demonstrates supe
 - **MAPE**: 21.51%
 - **R² Value**: 0.86
 
-## Installation and Setup
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/food-famine-forecasting.git
-   cd food-famine-forecasting
-   ```
-
-2. Install required packages:
-   ```
-   pip install flask pandas numpy scikit-learn matplotlib seaborn joblib
-   ```
-
-3. Run the application:
-   ```
-   python app.py
-   ```
-
-4. Open your web browser and navigate to:
-   ```
-   http://127.0.0.1:5000/
-   ```
 
 ## Dataset
 
@@ -94,11 +72,6 @@ food-famine-forecasting/
 ## Research Background
 This implementation is based on the research paper "Food Famine Forecasting using Artificial Neural Network". The paper introduced a novel approach using a Multi-Dimensional Factor Index (MFI) for classifying factors that influence food famine. The ANN model was trained on data from 1997 to 2023 and demonstrates higher accuracy (92.65%) compared to traditional methods like FEWS NET (70%) and K-Nearest Neighbor (87%).
 
-
-
-## Contact
-
-Haripriya - haripriya.20cse@sonatech.ac.in
 
 ## Acknowledgements
 
